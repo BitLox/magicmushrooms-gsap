@@ -1,0 +1,231 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.full-screen {
+  flex-direction: column;
+}
+
+/* Stars container */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.5;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle glow for starry effect */
+}
+
+/* Mushroom styles */
+.mushroom {
+  position: relative;
+  width: 100px;
+  height: 150px;
+}
+
+.mushroom-cap {
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 80px;
+  background: radial-gradient(circle, #ff69b4, #ff1493);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.5);
+}
+
+.mushroom-stem {
+  position: absolute;
+  bottom: 0;
+  left: 35px;
+  width: 30px;
+  height: 80px;
+  background: linear-gradient(#fff, #ffd700);
+  border-radius: 10px;
+}
+
+.large {
+  transform: scale(1.5);
+}
+
+.left {
+  left: 25%;
+  bottom: 0;
+  position: absolute;
+}
+
+.right {
+  right: 25%;
+  bottom: 0;
+  position: absolute;
+}
+
+.mushroom-person {
+  position: absolute;
+  bottom: 10%;
+  width: 20px;
+  height: 40px;
+  background: #ff69b4;
+  border-radius: 50% 50% 0 0;
+}
+
+.mushroom-person.left {
+  left: 10%;
+}
+
+/* Spores and particles */
+.spores-container, .particles-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spore, .particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #00bfff; /* Glowing blue */
+  border-radius: 50%;
+  box-shadow: 0 0 15px #00bfff; /* Stronger blue glow */
+  opacity: 0; /* Start hidden */
+}
+
+/* Landscape background */
+#landscape {
+  background: linear-gradient(to bottom, #000, #4b0082);
+}
+
+/* Info cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 80%;
+  padding: 1rem;
+}
+
+.info-card {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  transform-origin: bottom;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.info-card:hover {
+  box-shadow: 0 0 20px #ff69b4;
+}
+
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CTA */
+#cta {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#cta-content {
+  text-align: center;
+}
+
+.buy-btn, .join-btn {
+  background: #ff69b4;
+  border: none;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.join-btn {
+  background: #8a2be2;
+}
+
+/* Sticky Nav */
+.sticky-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  display: none;
+  justify-content: center;
+  z-index: 50;
+}
+
+.sticky-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.sticky-nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sticky-nav a:hover {
+  text-shadow: 0 0 10px #ff69b4;
+}
+
+@media (max-width: 768px) {
+  .sticky-nav {
+    display: none; /* Hide on mobile or simplify */
+  }
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+}
+
+#animation-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+/* Accessibility */
+.animations-off * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Text glow base */
+#title, #tagline {
+  text-shadow: 0 0 10px rgba(255, 20, 147, 0.5); /* Base glow */
+}
