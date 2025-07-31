@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Detect if on iOS
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
   // Generate and animate twinkling stars (pulsating spheres) immediately on load
   const starsContainer = document.getElementById('stars');
   const stars = [];
@@ -101,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .to('#title, #tagline', { opacity: 0, duration: 0.1 }, 0) // Instant fade out
     .to('#spores, #stars', { opacity: 0, duration: 0.5 }, 0.2) // Slower fade for spores/stars
     .to(document.body, { backgroundColor: '#00bfff', duration: 1 }, 0) // Seamless background transition
-    .to('#next-section-box', { opacity: 1, duration: 0.5 }, 0.8); // Fade in box at end
+    .to('#next-section-box', { opacity: 1, duration: 0.5 }, 0.7); // Fade in box earlier
 
   // Prevent normal scroll
   document.body.style.overflow = 'hidden';
@@ -109,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Use wheel event to update timeline progress
   let progress = 0;
   window.addEventListener('wheel', (e) => {
-    const divisor = e.deltaY > 0 ? 1600 : 6000; // Faster forward, slower reverse
+    const divisor = e.deltaY > 0 ? 1200 : 6000; // Faster forward, slower reverse
     progress = Math.max(0, Math.min(1, progress + (e.deltaY / divisor)));
     flyTl.progress(progress);
     console.log('Wheel deltaY:', e.deltaY, 'Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
@@ -124,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchmove', (e) => {
     const deltaY = touchStartY - e.touches[0].clientY;
     console.log('Touch deltaY:', deltaY); // Debug touch sensitivity
-    const divisor = deltaY > 0 ? 1600 : 6000; // Faster forward, slower reverse
+    const divisor = isIOS ? (deltaY > 0 ? 8000 : 6000) : (deltaY > 0 ? 1200 : 6000); // iOS slower forward, same reverse
     progress = Math.max(0, Math.min(1, progress + (deltaY / divisor)));
     flyTl.progress(progress);
     console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
