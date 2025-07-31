@@ -79,8 +79,6 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 0; /* No size so top-left is center */
-  height: 0;
   z-index: 3; /* Above mushroom */
   opacity: 0; /* Start hidden */
 }
@@ -100,4 +98,17 @@ body {
   text-shadow: 0 0 10px rgba(255, 20, 147, 0.5); /* Base glow */
   text-align: center;
   margin: 20px 0;
+}
+
+/* Simple box for next section */
+#next-section-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  opacity: 0; /* Start hidden */
+  z-index: 5; /* Above everything */
 }
