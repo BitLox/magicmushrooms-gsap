@@ -3,7 +3,9 @@ body {
   font-family: sans-serif;
   background: #000;
   color: #fff;
-  overflow-x: hidden;
+  overflow-y: scroll; /* Enable scroll for effect */
+  height: 200vh; /* Extra height for scroll */
+  transition: background-color 1s ease; /* Smooth transition */
 }
 
 .section {
@@ -43,6 +45,8 @@ body {
   position: relative;
   width: 100px;
   height: 150px;
+  margin: 20px auto;
+  transform-origin: center 40px; /* Center on middle of cap */
 }
 
 .mushroom-cap {
@@ -50,9 +54,11 @@ body {
   top: 0;
   width: 100px;
   height: 80px;
-  background: radial-gradient(circle, #ff69b4, #ff1493);
+  background: radial-gradient(circle, #00bfff, #1e90ff); /* Electric blue gradient */
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  box-shadow: 0 0 20px rgba(255, 20, 147, 0.5);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.5); /* Blue glow */
+  z-index: 2; /* Cap in front */
+  transform-origin: center 40px; /* Center on middle of cap */
 }
 
 .mushroom-stem {
@@ -61,48 +67,25 @@ body {
   left: 35px;
   width: 30px;
   height: 80px;
-  background: linear-gradient(#fff, #ffd700);
+  background: linear-gradient(#87cefa, #00b7eb); /* Lighter blue gradient */
   border-radius: 10px;
-}
-
-.large {
-  transform: scale(1.5);
-}
-
-.left {
-  left: 25%;
-  bottom: 0;
-  position: absolute;
-}
-
-.right {
-  right: 25%;
-  bottom: 0;
-  position: absolute;
-}
-
-.mushroom-person {
-  position: absolute;
-  bottom: 10%;
-  width: 20px;
-  height: 40px;
-  background: #ff69b4;
-  border-radius: 50% 50% 0 0;
-}
-
-.mushroom-person.left {
-  left: 10%;
+  z-index: 1; /* Stem behind cap */
+  transform-origin: center 40px; /* Align with cap center */
 }
 
 /* Spores and particles */
-.spores-container, .particles-container {
+.spores-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 0; /* No size so top-left is center */
+  height: 0;
+  z-index: 3; /* Above mushroom */
+  opacity: 0; /* Start hidden */
 }
 
-.spore, .particle {
+.spore {
   position: absolute;
   width: 5px;
   height: 5px;
@@ -112,120 +95,9 @@ body {
   opacity: 0; /* Start hidden */
 }
 
-/* Landscape background */
-#landscape {
-  background: linear-gradient(to bottom, #000, #4b0082);
-}
-
-/* Info cards */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  max-width: 80%;
-  padding: 1rem;
-}
-
-.info-card {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  text-align: center;
-  transform-origin: bottom;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.info-card:hover {
-  box-shadow: 0 0 20px #ff69b4;
-}
-
-@media (max-width: 768px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* CTA */
-#cta {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-#cta-content {
-  text-align: center;
-}
-
-.buy-btn, .join-btn {
-  background: #ff69b4;
-  border: none;
-  padding: 1rem 2rem;
-  margin: 1rem;
-  border-radius: 0.5rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.join-btn {
-  background: #8a2be2;
-}
-
-/* Sticky Nav */
-.sticky-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  padding: 1rem;
-  display: none;
-  justify-content: center;
-  z-index: 50;
-}
-
-.sticky-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
-
-.sticky-nav a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.sticky-nav a:hover {
-  text-shadow: 0 0 10px #ff69b4;
-}
-
-@media (max-width: 768px) {
-  .sticky-nav {
-    display: none; /* Hide on mobile or simplify */
-  }
-}
-
-/* Footer */
-footer {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 50;
-}
-
-#animation-toggle {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  padding: 0.5rem 1rem;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 0.5rem;
-}
-
-/* Accessibility */
-.animations-off * {
-  animation: none !important;
-  transition: none !important;
-}
-
 /* Text glow base */
 #title, #tagline {
   text-shadow: 0 0 10px rgba(255, 20, 147, 0.5); /* Base glow */
+  text-align: center;
+  margin: 20px 0;
 }
