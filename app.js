@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchmove', (e) => {
     const deltaY = touchStartY - e.touches[0].clientY;
     console.log('Touch deltaY:', deltaY); // Debug touch sensitivity
-    progress = Math.max(0, Math.min(1, progress + (deltaY / 12000))); // Much slower for iOS
+    progress = Math.max(0, Math.min(1, progress + (deltaY / 120000))); // Much slower for iOS
     flyTl.progress(progress);
     console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
     e.preventDefault();
