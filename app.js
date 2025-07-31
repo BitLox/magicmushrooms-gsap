@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Generate and animate twinkling stars (pulsating spheres) immediately on load
   const starsContainer = document.getElementById('stars');
+  const stars = [];
   for (let i = 0; i < 100; i++) {
     const star = document.createElement('div');
     star.className = 'star';
@@ -10,15 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
     star.style.top = `${Math.random() * 100}%`;
     star.style.left = `${Math.random() * 100}%`;
     starsContainer.appendChild(star);
+    stars.push(star);
+  }
+  console.log('Stars initialized:', stars.length); // Confirm count
 
+  stars.forEach((star, i) => {
     gsap.to(star, {
       opacity: Math.random() * 0.5 + 0.2,
       duration: Math.random() * 2 + 1,
       repeat: -1,
       yoyo: true,
       ease: 'sine.inOut',
+      onStart: () => console.log('Star ' + i + ' started twinkling')
     });
-  }
+  });
 
   // Generate spores dynamically (start at center)
   const sporesContainer = document.getElementById('spores');
@@ -70,10 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, '-=1')
     .to('#spores', { opacity: 1, duration: 1 }, '-=2');
 
-  // Spores drift outward from center (no repeat)
+  // Spores drift outward from center
   gsap.utils.toArray('.spore').forEach((spore, i) => {
     const angle = Math.random() * 360;
-    const distance = Math.random() * 400 + 200;
+    const distance = Math.random() * 200 + 100;
     const targetX = Math.cos(angle * Math.PI / 180) * distance;
     const targetY = Math.sin(angle * Math.PI / 180) * distance;
     gsap.to(spore, {
@@ -83,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       duration: 5 + Math.random() * 5,
       delay: 3.5 + i * 0.3,
       ease: 'sine.inOut',
+      repeat: -1,
       onStart: () => console.log('Spore ' + i + ' started drifting'),
       onUpdate: () => console.log('Spore ' + i + ' opacity:', spore.style.opacity, 'transform:', spore.style.transform, 'visibility:', window.getComputedStyle(spore).visibility)
     });
@@ -92,18 +99,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const flyTl = gsap.timeline({ paused: true });
   flyTl.fromTo('#central-mushroom', { scale: 1 }, { scale: 50, ease: 'none' }) // Grow from full size to 5000%
     .to('#title, #tagline', { opacity: 0, duration: 0.1 }, 0) // Instant fade out
-    .to('#spores, #stars', { opacity: 0, duration: 0.5 }, 0.1) // Slower fade for spores/stars
-    .to(document.body, { backgroundColor: '#00bfff', duration: 1 }, 0); // Seamless background transition
+    .to('#spores, #stars', { opacity: 0, duration: 0.5 }, 0.2) // Slower fade for spores/stars
+    .to(document.body, { backgroundColor: '#00bfff', duration: 1 }, 0) // Seamless background transition
+    .to('#next-section-box', { opacity: 1, duration: 0.5 }, 0.8); // Fade in box at end
 
   // Prevent normal scroll
   document.body.style.overflow = 'hidden';
 
-  // Use wheel event to update timeline progress (slower with /2000)
+  // Use wheel event to update timeline progress
   let progress = 0;
   window.addEventListener('wheel', (e) => {
-    progress = Math.max(0, Math.min(1, progress + (e.deltaY / 2000))); // Slower scroll
+    const divisor = e.deltaY > 0 ? 1600 : 6000; // Faster forward, slower reverse
+    progress = Math.max(0, Math.min(1, progress + (e.deltaY / divisor)));
     flyTl.progress(progress);
-    console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
+    console.log('Wheel deltaY:', e.deltaY, 'Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
   }, { passive: false });
 
   // For touch scrolling in mobile/Safari
@@ -115,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchmove', (e) => {
     const deltaY = touchStartY - e.touches[0].clientY;
     console.log('Touch deltaY:', deltaY); // Debug touch sensitivity
-    progress = Math.max(0, Math.min(1, progress + (deltaY / 120000))); // Very slow for iOS
+    const divisor = deltaY > 0 ? 1600 : 6000; // Faster forward, slower reverse
+    progress = Math.max(0, Math.min(1, progress + (deltaY / divisor)));
     flyTl.progress(progress);
     console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
     e.preventDefault();

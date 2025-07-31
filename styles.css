@@ -4,7 +4,7 @@ body {
   background: #000;
   color: #fff;
   overflow-y: scroll; /* Enable scroll for effect */
-  height: 200vh; /* Extra height for scroll */
+  height: 400vh; /* Extra height for scroll */
   transition: background-color 1s ease; /* Smooth transition */
 }
 
@@ -14,7 +14,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Allow overflow for growth and spores */
 }
 
 .full-screen {
@@ -79,7 +79,9 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 3; /* Above mushroom */
+  width: 0; /* No size so top-left is center */
+  height: 0;
+  z-index: 10; /* Above everything */
   opacity: 0; /* Start hidden */
 }
 
@@ -91,6 +93,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 15px #00bfff; /* Stronger blue glow */
   opacity: 0; /* Start hidden */
+  pointer-events: none; /* No interaction */
 }
 
 /* Text glow base */
@@ -98,10 +101,11 @@ body {
   text-shadow: 0 0 10px rgba(255, 20, 147, 0.5); /* Base glow */
   text-align: center;
   margin: 20px 0;
+  z-index: 4; /* Above mushroom */
 }
 
 /* Simple box for next section */
-#next-section-box {
+.next-section-box {
   position: absolute;
   top: 50%;
   left: 50%;
