@@ -102,7 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Use wheel event to update timeline progress (slower with /2000)
   let progress = 0;
   window.addEventListener('wheel', (e) => {
-    progress = Math.max(0, Math.min(1, progress + (e.deltaY / 2000))); // Slower scroll
+    const divisor = e.deltaY > 0 ? 2000 : 2000; // Same for both directions
+    progress = Math.max(0, Math.min(1, progress + (e.deltaY / divisor)));
     flyTl.progress(progress);
     console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
   }, { passive: false });
@@ -116,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchmove', (e) => {
     const deltaY = touchStartY - e.touches[0].clientY;
     console.log('Touch deltaY:', deltaY); // Debug touch sensitivity
-    progress = Math.max(0, Math.min(1, progress + (deltaY / 120000))); // Much slower for iOS
+    const divisor = deltaY > 0 ? 120000 : 2000; // Super slow forward, faster reverse
+    progress = Math.max(0, Math.min(1, progress + (deltaY / divisor)));
     flyTl.progress(progress);
     console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
     e.preventDefault();
