@@ -89,9 +89,9 @@ body {
   position: absolute;
   width: 5px;
   height: 5px;
-  background: #00bfff; /* Glowing blue */
+  background: #FFEE0A; /* Electric yellow */
   border-radius: 50%;
-  box-shadow: 0 0 15px #00bfff; /* Stronger blue glow */
+  box-shadow: 0 0 15px #FFEE0A; /* Yellow glow */
   opacity: 0; /* Start hidden */
   pointer-events: none; /* No interaction */
 }
@@ -123,9 +123,9 @@ body {
   position: absolute;
   width: 10px;
   height: 10px;
-  background: #00bfff;
+  background: #FFEE0A; /* Electric yellow */
   border-radius: 50%;
-  box-shadow: 0 0 20px #00bfff;
+  box-shadow: 0 0 20px #FFEE0A; /* Yellow glow */
   opacity: 0.5;
   pointer-events: none; /* No interaction */
 }

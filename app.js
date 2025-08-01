@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const bgTl = gsap.timeline({ repeat: -1 });
       bgTl.to('#motion-background', {
         backgroundColor: '#4B0082', // Deep purple
-        duration: 2.5, // Shortened duration
+        duration: 2.5,
         ease: 'sine.inOut',
         onStart: () => console.log('Background color changing to: #4B0082')
       })
@@ -162,14 +162,14 @@ document.addEventListener('DOMContentLoaded', () => {
         onStart: () => console.log('Background color changing to: #C71585')
       })
       .to('#motion-background', {
-        backgroundColor: '#FAD459', // Yellow
+        backgroundColor: '#18A3FF', // Vibrant blue
         duration: 5,
         ease: 'sine.inOut',
-        onStart: () => console.log('Background color changing to: #FAD459')
+        onStart: () => console.log('Background color changing to: #18A3FF')
       })
       .to('#motion-background', {
         backgroundColor: '#4B0082', // Back to deep purple
-        duration: 2.5, // Shortened duration
+        duration: 2.5,
         ease: 'sine.inOut',
         onStart: () => console.log('Background color changing to: #4B0082')
       });
