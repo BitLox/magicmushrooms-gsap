@@ -96,6 +96,40 @@ body {
   pointer-events: none; /* No interaction */
 }
 
+/* Motion background for next scene */
+.motion-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #4B0082; /* Start with deep purple to avoid blue flash */
+  opacity: 0; /* Start hidden */
+  z-index: 0; /* Above stars, below content */
+}
+
+/* Motion particles for next scene */
+.motion-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Above background, below content */
+  opacity: 0; /* Start hidden */
+}
+
+.motion-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #00bfff;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00bfff;
+  opacity: 0.5;
+  pointer-events: none; /* No interaction */
+}
+
 /* Text glow base */
 #title, #tagline {
   text-shadow: 0 0 10px rgba(255, 20, 147, 0.5); /* Base glow */

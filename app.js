@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Detect if on iOS
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-  // Generate and animate twinkling stars (pulsating spheres) immediately on load
+  // Generate and animate twinkling stars
   const starsContainer = document.getElementById('stars');
   const stars = [];
   for (let i = 0; i < 100; i++) {
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     starsContainer.appendChild(star);
     stars.push(star);
   }
-  console.log('Stars initialized:', stars.length); // Confirm count
+  console.log('Stars initialized:', stars.length);
 
   stars.forEach((star, i) => {
     gsap.to(star, {
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Generate spores dynamically (start at center)
+  // Generate spores
   const sporesContainer = document.getElementById('spores');
   const spores = [];
   for (let i = 0; i < 100; i++) {
@@ -40,9 +40,22 @@ document.addEventListener('DOMContentLoaded', () => {
     sporesContainer.appendChild(spore);
     spores.push(spore);
   }
-  console.log('Spores initialized:', spores.length); // Confirm count
+  console.log('Spores initialized:', spores.length);
 
-  // Intro animations: Grow mushroom first, then fade in title with glow, then tagline with glow
+  // Generate motion particles for next scene
+  const motionParticlesContainer = document.getElementById('motion-particles');
+  const motionParticles = [];
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'motion-particle';
+    particle.style.top = `${Math.random() * 100}%`;
+    particle.style.left = `${Math.random() * 100}%`;
+    motionParticlesContainer.appendChild(particle);
+    motionParticles.push(particle);
+  }
+  console.log('Motion particles initialized:', motionParticles.length);
+
+  // Intro animations: Grow mushroom, fade in title, tagline, spores
   const tl = gsap.timeline({ 
     defaults: { ease: 'power2.out' },
     onComplete: () => {
@@ -98,13 +111,69 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Custom wheel event for "scroll" to drive the timeline (no normal scrolling)
-  const flyTl = gsap.timeline({ paused: true });
-  flyTl.fromTo('#central-mushroom', { scale: 1 }, { scale: 50, ease: 'none' }) // Grow from full size to 5000%
+  // Motion particles animation (looping, slow drift)
+  gsap.utils.toArray('.motion-particle').forEach((particle, i) => {
+    const angle = Math.random() * 360;
+    const distance = Math.random() * 100 + 100;
+    const targetX = Math.cos(angle * Math.PI / 180) * distance;
+    const targetY = Math.sin(angle * Math.PI / 180) * distance;
+    gsap.to(particle, {
+      x: targetX,
+      y: targetY,
+      opacity: 0.5,
+      duration: 10 + Math.random() * 5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      onStart: () => console.log('Motion particle ' + i + ' started drifting')
+    });
+  });
+
+  // Custom wheel event for scroll to drive timeline (no normal scrolling)
+  const flyTl = gsap.timeline({ 
+    paused: true,
+    onUpdate: () => {
+      console.log('Motion background opacity:', window.getComputedStyle(document.getElementById('motion-background')).opacity);
+      console.log('Motion particles opacity:', window.getComputedStyle(document.getElementById('motion-particles')).opacity);
+    }
+  });
+  flyTl.fromTo('#central-mushroom', { scale: 1 }, { scale: 50, ease: 'none' }) // Grow to 5000%
     .to('#title, #tagline', { opacity: 0, duration: 0.1 }, 0) // Instant fade out
     .to('#spores, #stars', { opacity: 0, duration: 0.5 }, 0.2) // Slower fade for spores/stars
-    .to(document.body, { backgroundColor: '#00bfff', duration: 1 }, 0) // Seamless background transition
-    .to('#next-section-box', { opacity: 1, duration: 0.5 }, 0.7); // Fade in box earlier
+    .to('#motion-background', { 
+      opacity: 1, 
+      duration: 0.5
+    }, 0.65) // Fade in earlier
+    .to('#motion-particles', { opacity: 1, duration: 0.5 }, 0.65) // Fade in particles earlier
+    .to('#next-section-box', { opacity: 1, duration: 0.5 }, 0.7) // Fade in box
+    .add(() => {
+      // Simplified color cycle timeline
+      const bgTl = gsap.timeline({ repeat: -1 });
+      bgTl.to('#motion-background', {
+        backgroundColor: '#4B0082', // Deep purple
+        duration: 2.5, // Shortened duration
+        ease: 'sine.inOut',
+        onStart: () => console.log('Background color changing to: #4B0082')
+      })
+      .to('#motion-background', {
+        backgroundColor: '#C71585', // Soft magenta
+        duration: 5,
+        ease: 'sine.inOut',
+        onStart: () => console.log('Background color changing to: #C71585')
+      })
+      .to('#motion-background', {
+        backgroundColor: '#FAD459', // Yellow
+        duration: 5,
+        ease: 'sine.inOut',
+        onStart: () => console.log('Background color changing to: #FAD459')
+      })
+      .to('#motion-background', {
+        backgroundColor: '#4B0082', // Back to deep purple
+        duration: 2.5, // Shortened duration
+        ease: 'sine.inOut',
+        onStart: () => console.log('Background color changing to: #4B0082')
+      });
+    }, 0.65);
 
   // Prevent normal scroll
   document.body.style.overflow = 'hidden';
@@ -112,10 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Use wheel event to update timeline progress
   let progress = 0;
   window.addEventListener('wheel', (e) => {
-    const divisor = e.deltaY > 0 ? 1200 : 6000; // Faster forward, slower reverse
+    const divisor = e.deltaY > 0 ? 8000 : 6000; // Forward 8000, reverse 6000
     progress = Math.max(0, Math.min(1, progress + (e.deltaY / divisor)));
     flyTl.progress(progress);
-    console.log('Wheel deltaY:', e.deltaY, 'Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
+    console.log('Wheel deltaY:', e.deltaY, 'Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1));
   }, { passive: false });
 
   // For touch scrolling in mobile/Safari
@@ -126,11 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('touchmove', (e) => {
     const deltaY = touchStartY - e.touches[0].clientY;
-    console.log('Touch deltaY:', deltaY); // Debug touch sensitivity
-    const divisor = isIOS ? (deltaY > 0 ? 8000 : 6000) : (deltaY > 0 ? 1200 : 6000); // iOS slower forward, same reverse
+    console.log('Touch deltaY:', deltaY);
+    const divisor = isIOS ? (deltaY > 0 ? 120000 : 6000) : (deltaY > 0 ? 8000 : 6000); // iOS slower forward
     progress = Math.max(0, Math.min(1, progress + (deltaY / divisor)));
     flyTl.progress(progress);
-    console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1)); // Debug scale
+    console.log('Timeline progress:', progress, 'Scale:', 1 + progress * (50 - 1));
     e.preventDefault();
   }, { passive: false });
 });
